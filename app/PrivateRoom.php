@@ -16,6 +16,6 @@ class PrivateRoom extends Model
 
     public function isParticipant($userId)
     {
-        return $this->participants->contains($userId);
+        return $this->participants()->where('user_id', $userId)->exists();
     }
 }
