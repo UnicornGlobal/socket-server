@@ -1,6 +1,7 @@
 <?php
 
 use App\PrivateRoom;
+
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -13,10 +14,8 @@ use App\PrivateRoom;
 */
 Broadcast::routes([ 'middleware' => [ 'api', 'jwt.auth' ]]);
 
-Broadcast::channel('App.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
-
-Broadcast::channel('private.{room}', function ($user, App\PrivateRoom $room) {
+Broadcast::channel('private.{room}', function ($user, $id) {
+    // return whether or not this current user is authorized to visit this chat room
+    $room = PrivateRoom::where('_id', $id)->first();
     return $room->isParticipant($user->id);
 });
