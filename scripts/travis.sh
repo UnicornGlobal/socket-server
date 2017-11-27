@@ -1,9 +1,4 @@
 #!/bin/bash
-
-function pull_request() {
-    echo "Pull Request, Skipping Deploy"
-}
-
 function package() {
     echo "Prepping a build"
 
@@ -13,7 +8,7 @@ function package() {
     rm -rf .git
     cd -
     cd /tmp
-    tar -czvf /tmp/package.tgz /tmp/build
+    tar -czf $T_PACKAGE_NAME /tmp/build
     cd -
 }
 
@@ -24,20 +19,16 @@ function submit() {
     S_USER=$2
     S_HOST=$3
 
-    # Copy our deploy script to the remote machine
-    scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} ./scripts/deploy.sh ${S_USER}@${S_HOST}:/tmp/deploy.sh
-    scp -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -P ${S_PORT} /tmp/package.tgz ${S_USER}@${S_HOST}:/tmp/package.tgz
-
-    # run
-    ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} chmod +x /tmp/deploy.sh
-    ssh -o "StrictHostKeyChecking no" -i /tmp/deploy_rsa -p${S_PORT} ${S_USER}@${S_HOST} /tmp/deploy.sh dev
+    $T_SUBMIT_COMMAND -P $S_PORT $T_PACKAGE_NAME $S_USER@$S_HOST:$T_PACKAGE_NAME
+    $T_RUN_COMMAND -p$S_PORT $S_USER@$S_HOST $T_RUN_SCRIPT $TRAVIS_BRANCH
 }
 
 function deploy_dev() {
-    echo "Deploying Dev Branch to Staging"
+    # echo "Deploying Dev Branch to Staging"
+    echo "DEPLOY TO DEV DISABLED"
 
-    package
-    submit ${DEPLOY_PORT} ${DEPLOY_USER} ${DEPLOY_HOST}
+    # package
+    # submit ${DEPLOY_PORT} ${DEPLOY_USER} ${DEPLOY_HOST}
 }
 
 function deploy_prod() {
@@ -47,11 +38,9 @@ function deploy_prod() {
     submit ${LIVE_DEPLOY_PORT} ${LIVE_DEPLOY_USER} ${LIVE_DEPLOY_HOST}
 }
 
-if [ "$TRAVIS_BRANCH" == "dev" ]; then
+if [ "$TRAVIS_BRANCH" == "$DEV_BRANCH" ]; then
   deploy_dev
-elif [ "$TRAVIS_BRANCH" == "broadcast-auth" ]; then
-  deploy_dev
-elif [ "$TRAVIS_BRANCH" == "master" ]; then
+elif [ "$TRAVIS_BRANCH" == "$LIVE_BRANCH" ]; then
   deploy_prod
 else
   echo "Not a deployment branch"
