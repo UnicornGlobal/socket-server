@@ -1,14 +1,14 @@
 #!/bin/bash
 function package() {
-    echo "Prepping a build"
+    echo "Building"
 
-    mkdir /tmp/build
-    cp -r * /tmp/build
-    cd /tmp/build
+    mkdir $T_PACKAGE_FOLDER
+    cp -r * $T_PACKAGE_FOLDER
+    cd $T_PACKAGE_FOLDER
     rm -rf .git
     cd -
     cd /tmp
-    tar -czf $T_PACKAGE_NAME /tmp/build
+    tar -czf $T_PACKAGE_NAME $T_PACKAGE_FOLDER
     cd -
 }
 
@@ -27,7 +27,7 @@ function deploy_dev() {
     # echo "Deploying Dev Branch to Staging"
     echo "DEPLOY TO DEV DISABLED"
 
-    # package
+    package
     # submit ${DEPLOY_PORT} ${DEPLOY_USER} ${DEPLOY_HOST}
 }
 

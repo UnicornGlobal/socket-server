@@ -48,3 +48,8 @@ to whichever values you set in your instance of the laravel echo server.
 
 Socket Server and your Lumen / Laravel app do not have to be on the same physical
 machine. As long as they both use the same Redis server it will all work.
+
+# JWT
+
+You must use the same JWT you use with your Lumen / Laravel apps to auth with
+the socket server. This only applies to private channels.
