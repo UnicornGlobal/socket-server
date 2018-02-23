@@ -29,8 +29,3 @@ deploy:
     skip_cleanup: true
     on:
       branch: master
-  - provider: script
-    script: "./scripts/travis.sh"
-    skip_cleanup: true
-    on:
-      branch: live-prep
