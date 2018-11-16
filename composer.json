@@ -1,5 +1,5 @@
 {
-    "name": "unicorn-global/laravel-lumen-socket-server",
+    "name": "unicorn-global/socket-server",
     "version": "1.0.0",
     "description": "Laravel / Lumen Socket Server with JWT+SSL",
     "keywords": ["sockets", "laravel", "lumen", "ssl", "jwt"],
