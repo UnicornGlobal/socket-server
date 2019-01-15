@@ -53,3 +53,11 @@ machine. As long as they both use the same Redis server it will all work.
 
 You must use the same JWT you use with your Lumen / Laravel apps to auth with
 the socket server. This only applies to private channels.
+
+# Authors
+
+Add yourself here if you contribute.
+
+* [Darryn Ten](https://github.com/darrynten)
+* [Brian Maiyo](https://github.com/kiproping)
+* [Unicorn Global et al](https://github.com/UnicornGlobal)
